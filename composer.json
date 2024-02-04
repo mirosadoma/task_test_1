@@ -1,0 +1,12 @@
+{
+    "name": "amr/task_1",
+    "require": {
+        "phpunit/phpunit": "^9.6",
+        "symfony/var-dumper": "^5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Task1\\": "src/"
+        }
+    }
+}

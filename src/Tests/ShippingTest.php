@@ -4,7 +4,9 @@ namespace Task1\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Task1\Models\Address;
+use Task1\Models\Country;
 use Task1\Models\Shipping;
+use Task1\Services\Address\TaxCalculatorFactory;
 
 class ShippingTest extends TestCase
 {
@@ -17,7 +19,7 @@ class ShippingTest extends TestCase
             $shipping->setName('aramex');
             $shipping->setTax(13);
             $shipping->setCost(10);
-            $tax = $shipping->calculateTax($address);
+            $tax = $this->calculateTax($address, $shipping);
 
             // Assert that tax is greater than zero
             $this->assertGreaterThan(0, $tax);
@@ -36,7 +38,7 @@ class ShippingTest extends TestCase
             $shipping->setName('aramex');
             $shipping->setTax(13);
             $shipping->setCost(10);
-            $tax = $shipping->calculateTax($address);
+            $tax = $this->calculateTax($address, $shipping);
 
             // Assert that tax is greater than zero
             $this->assertGreaterThan(0, $tax);
@@ -56,7 +58,7 @@ class ShippingTest extends TestCase
             $shipping->setName('fedex');
             $shipping->setTax(13);
             $shipping->setCost(10);
-            $tax = $shipping->calculateTax($address);
+            $tax = $this->calculateTax($address, $shipping);
 
             // Assert that tax is greater than zero
             $this->assertGreaterThan(0, $tax);
@@ -75,7 +77,7 @@ class ShippingTest extends TestCase
             $shipping->setName('fedex');
             $shipping->setTax(13);
             $shipping->setCost(10);
-            $tax = $shipping->calculateTax($address);
+            $tax = $this->calculateTax($address, $shipping);
 
             // Assert that tax is greater than zero
             $this->assertGreaterThan(0, $tax);
@@ -84,5 +86,10 @@ class ShippingTest extends TestCase
         } catch (\TypeError $th) {
             $this->assertStringStartsWith('App\Tests\ShippingTest::testcalculateTaxFedexKuwait():', $th->getMessage());
         }
+    }
+
+    public function calculateTax(Address $address, $shippingMethod) {
+        $taxCalculator = TaxCalculatorFactory::create($shippingMethod->getName(), $address);
+        return $shippingMethod->getTax() + $taxCalculator;
     }
 }

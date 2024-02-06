@@ -10,6 +10,10 @@ class Address
     protected $nearest_point;
     protected $map;
 
+    public function __construct(Country $country = null){
+        $this->setCountry($country);
+    }
+
     public function getCty()
     {
         return $this->city;
@@ -63,7 +67,7 @@ class Address
         $address = new self();
         $address->setCity('cairo');
         $address->setStreet('el tahrir');
-        $address->setCountry('egypt');
+        $address->setCountry($this->getCountry());
         return $address;
     }
 }

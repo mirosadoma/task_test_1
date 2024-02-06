@@ -4,6 +4,7 @@ namespace Task1\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Task1\Models\Address;
+use Task1\Models\Country;
 use Task1\Models\Order;
 use Task1\Models\Shipping;
 use Task1\Models\Product;
@@ -13,7 +14,8 @@ class OrderTest extends TestCase
 {
     public function testOrderHaveReceipt(){
         try {
-            $address = (new Address)->create();
+            $country = (new Country)->create();
+            $address = (new Address($country))->create();
             $shipping = (new Shipping)->create();
             $product = (new Product)->create();
             $user = (new User($address))->create();

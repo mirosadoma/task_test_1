@@ -3,6 +3,7 @@
 namespace Task1\Models;
 
 use Task1\Models\Address;
+use Task1\Services\Address\TaxCalculatorFactory;
 
 class Shipping
 {
@@ -36,23 +37,9 @@ class Shipping
         return $this->tax = $tax;
     }
 
-    public function calculateTax(Address $address){
-        if ($this->getName() == 'aramex'){
-            if ($address->getCountry() == 'egypt'){
-                return $this->getTax() + .14;
-            }
-            elseif ($address->getCountry() == 'kuwait'){
-                return $this->getTax() + .1;
-            }
-        }
-        elseif($this->getName() == 'fedex'){
-            if ($address->getCountry() == 'egypt'){
-                return $this->getTax() + .20;
-            }
-            elseif ($address->getCountry() == 'kuwait'){
-                return $this->getTax() + .13;
-            }
-        }
+    public function calculateTax(Address $address, $shippingMethod) {
+        $taxCalculator = TaxCalculatorFactory::create($shippingMethod->getName(), $address);
+        return $this->getTax() + $taxCalculator;
     }
 
     public function create() {
